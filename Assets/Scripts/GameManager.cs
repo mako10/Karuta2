@@ -78,6 +78,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI colorNameText;
     [SerializeField] private TextMeshProUGUI scoreText; // スコア表示用のTextMeshProUGUI
 
+    // 表示モード: 0 = ランダム、1 = 2番目の色名
+    //[SerializeField, Range(0,1)] private int mode = 0;
+
+    public int mode = 0; // 0 = ランダム、1 = 2番目の色名
+
+    void Awake()
+    {
+        // TitleUIからmodeを取得
+        mode = GameSettings.Mode;
+        //mode = PlayerPrefs.GetInt("GameMode", 0); // デフォルトは0（ランダム）
+        Debug.Log("Game Mode: " + mode);
+    }
+
     void Start()
     {
         GameObject cardPrefab = Resources.Load<GameObject>("Card");
@@ -213,9 +226,18 @@ public class GameManager : MonoBehaviour
         int randomCardIndex = Random.Range(0, keys.Count);
         var selectedCardData = cardData[keys[randomCardIndex]];
 
-        // 選ばれたカードの色名リストからランダムに1つの色名を選択
-        int randomColorNameIndex = Random.Range(0, selectedCardData.colorNames.Count);
-        string selectedColorName = selectedCardData.colorNames[randomColorNameIndex];
+        string selectedColorName;
+
+        // modeが1なら2番目（index=1）を優先表示。存在しない場合はフォールバックでランダム。
+        if (mode == 1 && selectedCardData.colorNames.Count > 1)
+        {
+            selectedColorName = selectedCardData.colorNames[1];
+        }
+        else
+        {
+            int randomColorNameIndex = Random.Range(0, selectedCardData.colorNames.Count);
+            selectedColorName = selectedCardData.colorNames[randomColorNameIndex];
+        }
 
         Debug.Log($"正解に選ばれた色名: {selectedColorName}");
         colorNameText.text = selectedColorName; // ランダムに選ばれた色名を表示

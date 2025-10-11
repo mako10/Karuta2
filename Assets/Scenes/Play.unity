@@ -229,6 +229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorNameText: {fileID: 765614191}
   scoreText: {fileID: 1121131699}
+  mode: 0
 --- !u!4 &354418420
 Transform:
   m_ObjectHideFlags: 0
