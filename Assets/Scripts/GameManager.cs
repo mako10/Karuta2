@@ -40,7 +40,39 @@ public class GameManager : MonoBehaviour
         { "29", ("#F08080", new List<string> { "LIGHT CORAL", "ライトコーラル", "#F08080" }) },
         { "30", ("#20B2AA", new List<string> { "LIGHT SEA GREEN", "ライトシーグリーン", "#20B2AA" }) },
         { "31", ("#87CEFA", new List<string> { "LIGHT SKY BLUE", "ライトスカイブルー", "#87CEFA" }) },
-        { "32", ("#778899", new List<string> { "LIGHT SLATE GRAY", "ライトスレートグレー", "#778899" }) }
+        { "32", ("#778899", new List<string> { "LIGHT SLATE GRAY", "ライトスレートグレー", "#778899" }) },
+        { "33", ("#FFB6C1", new List<string> { "LIGHT PINK", "ライトピンク", "#FFB6C1" }) },
+        { "34", ("#8B0000", new List<string> { "DARK RED", "ダークレッド", "#8B0000" }) },
+        { "35", ("#006400", new List<string> { "DARK GREEN2", "ダークグリーン2", "#006400" }) },
+        { "36", ("#00008B", new List<string> { "DARK BLUE", "ダークブルー", "#00008B" }) },
+        { "37", ("#BDB76B", new List<string> { "DARK KHAKI", "ダークカーキ", "#BDB76B" }) },
+        { "38", ("#8B008B", new List<string> { "DARK MAGENTA", "ダークマゼンタ", "#8B008B" }) },
+        { "39", ("#556B2F", new List<string> { "DARK OLIVE GREEN", "ダークオリーブグリーン", "#556B2F" }) },
+        { "40", ("#FF8C00", new List<string> { "DARK ORANGE", "ダークオレンジ", "#FF8C00" }) },
+        { "41", ("#9932CC", new List<string> { "DARK ORCHID", "ダークオーキッド", "#9932CC" }) },
+        { "42", ("#8FBC8F", new List<string> { "DARK SEA GREEN", "ダークシーグリーン", "#8FBC8F" }) },
+        { "43", ("#483D8B", new List<string> { "DARK SLATE BLUE", "ダークスレートブルー", "#483D8B" }) },
+        { "44", ("#2F4F4F", new List<string> { "DARK SLATE GRAY", "ダークスレートグレー", "#2F4F4F" }) },
+        { "45", ("#00BFFF", new List<string> { "DEEP SKY BLUE", "ディープスカイブルー", "#00BFFF" }) },
+        { "46", ("#696969", new List<string> { "DIM GRAY", "ディムグレー", "#696969" }) },
+        { "47", ("#1E90FF", new List<string> { "DODGER BLUE2", "ドジャーブルー2", "#1E90FF" }) },
+        { "48", ("#B22222", new List<string> { "FIREBRICK2", "レンガ色2", "#B22222" }) },
+        { "49", ("#FFFAF0", new List<string> { "FLORAL WHITE", "フローラルホワイト", "#FFFAF0" }) },
+        { "50", ("#228B22", new List<string> { "FOREST GREEN2", "フォレストグリーン2", "#228B22" }) },
+        { "51", ("#DCDCDC", new List<string> { "GAINSBORO", "ゲインズボロ", "#DCDCDC" }) },
+        { "52", ("#F8F8FF", new List<string> { "GHOST WHITE", "ゴーストホワイト", "#F8F8FF" }) },
+        { "53", ("#FFD700", new List<string> { "GOLD2", "ゴールド2", "#FFD700" }) },
+        { "54", ("#DAA520", new List<string> { "GOLDENROD2", "ゴールデンロッド2", "#DAA520" }) },
+        { "55", ("#808080", new List<string> { "GRAY2", "グレー2", "#808080" }) },
+        { "56", ("#008000", new List<string> { "GREEN2", "グリーン2", "#008000" }) },
+        { "57", ("#ADFF2F", new List<string> { "GREEN YELLOW2", "黄緑2", "#ADFF2F" }) },
+        { "58", ("#F0FFF0", new List<string> { "HONEYDEW", "ハニーデュー", "#F0FFF0" }) },
+        { "59", ("#FF69B4", new List<string> { "HOT PINK2", "ホットピンク2", "#FF69B4" }) },
+        { "60", ("#CD5C5C", new List<string> { "INDIAN RED", "インディアンレッド", "#CD5C5C" }) },
+        { "61", ("#4B0082", new List<string> { "INDIGO2", "インディゴ2", "#4B0082" }) },
+        { "62", ("#FFFFF0", new List<string> { "IVORY", "アイボリー", "#FFFFF0" }) },
+        { "63", ("#F0E68C", new List<string> { "KHAKI", "カーキ", "#F0E68C" }) },
+        { "64", ("#E6E6FA", new List<string> { "LAVENDER", "ラベンダー", "#E6E6FA" }) }
     };
 
     [SerializeField] private TextMeshProUGUI colorNameText;
@@ -50,27 +82,37 @@ public class GameManager : MonoBehaviour
     {
         GameObject cardPrefab = Resources.Load<GameObject>("Card");
 
-        // 32枚分のIDリスト
-        List<string> cardIds = new List<string>();
-        for (int i = 1; i <= 32; i++)
+        // 64種類のIDリスト
+        List<string> allCardIds = new List<string>();
+        for (int i = 1; i <= 64; i++)
         {
-            cardIds.Add(i.ToString("D2"));
+            allCardIds.Add(i.ToString("D2"));
         }
 
-        // シャッフル
-        for (int i = 0; i < cardIds.Count; i++)
+        // シャッフルして32枚分だけ選択
+        for (int i = 0; i < allCardIds.Count; i++)
         {
-            int rnd = Random.Range(i, cardIds.Count);
-            (cardIds[i], cardIds[rnd]) = (cardIds[rnd], cardIds[i]);
+            int rnd = Random.Range(i, allCardIds.Count);
+            (allCardIds[i], allCardIds[rnd]) = (allCardIds[rnd], allCardIds[i]);
         }
+        List<string> cardIds = allCardIds.GetRange(0, 32);
 
-        float startX = -7f; // 横8枚分の配置
-        float startY = 3f;  // 縦4枚分の配置（上から下へ）
+        // cardDataを画面に表示する32枚分だけに絞る
+        var newCardData = new Dictionary<string, (string colorCode, List<string> colorNames)>();
+        foreach (var id in cardIds)
+        {
+            if (cardData.ContainsKey(id))
+            {
+                newCardData.Add(id, cardData[id]);
+            }
+        }
+        cardData = newCardData;
+
+        float startX = -7f;
+        float startY = 3f;
         float intervalX = 2.0f;
         float intervalY = -2.0f;
-
         int columns = 8;
-        //int rows = 4;
 
         for (int i = 0; i < 32; i++)
         {
